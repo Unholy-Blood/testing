@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unholy Blood</title>
+</head>
+
+<body>
+    <!--Getting necessary variables to load images-->
+    <script>
+        function getParentFolder(from_last) {
+            url = window.location.href;
+            if (!from_last) from_last = 1
+            url = url.lastIndexOf('/') == (url.length - 1) ? url.substr(0, url.length - 1) : url.substr(0, url.lastIndexOf('/'));
+            return url.split('/')[url.split('/').length - from_last];   
+        }
+        // filename = parent folder
+        filename = getParentFolder();
+        // series_name = Github repository name       
+        series_name = getParentFolder(2);
+    </script>
+    
+    <!-- Capitalizing the title and page title -->
+    <script>
+        // capitalize every  first letter of each word
+        function capitalize(input) {
+            var words = input.split(' ');
+            var CapitalizedWords = [];
+            words.forEach(element => {
+                CapitalizedWords.push(element[0].toUpperCase() + element.slice(1, element.length));
+            });
+            return CapitalizedWords.join(' ');
+        }
+
+        // For Page Title and document title
+        let better_series_name = series_name.replace('-', ' ')
+        let new_series_name = capitalize(better_series_name)
+    </script>
+
+    <!-- Declaring necessary Variables and document title-->
+    <script>
+        // total_slides = infinity
+        let total_slides = Math.pow(10, 1000);
+        let chapter_num = filename
+        let episode_num = chapter_num - 1
+        document.title = 'Episode ' + episode_num + ' | ' + new_series_name;
+    </script>
+
+    <!-- function if file doesFileExist (used for loading images) -->
+    <script>
+        function doesFileExist(urlToFile) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('HEAD', urlToFile, false);
+            xhr.send();
+
+            if (xhr.status == "404") {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    </script>
+
+    <!-- load title, hr, load images  -->
+    <center>
+        <!-- Loading Title of the page -->
+        <div id="titles"></div>
+        <script>
+        document.getElementById("titles").innerHTML = '<h1>' + new_series_name + ', Episode : ' + episode_num + ' </h1>'
+        </script>
+
+        <!-- Loading images  -->
+        <div id="images"></div>
+        <script>
+            image_loading: {
+                for (let jpg_num = 0; jpg_num < total_slides; jpg_num++)
+                    if (doesFileExist(series_name + ' Ch' + chapter_num + '.' + jpg_num + '.jpg')) {
+                        document.getElementById('images').innerHTML = document.getElementById('images').innerHTML + '<img src="' + series_name + ' Ch' + chapter_num + '.' + jpg_num + '.jpg" id="img' + jpg_num + '">';
+                    }
+                    else {
+                        console.clear()
+                        break image_loading;
+                    }
+            }
+        </script>
+    </center>
+
+    <!-- image gap removing -->
+    <style>
+        h1 {
+            font-size: 40px
+        }
+
+        img {
+            display: block;
+
+            /* for mobile or touchable devices */
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</body>
+
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unholy Blood</title>
+
+</head>
+
+<body>
+    <!-- Declaring the series name -->
+    <!-- <script type="text/javascript" src="series_name.js"></script> -->
+    <script>
+        function getParentFolder(from_last) {
+            url = window.location.href;
+            if (!from_last) from_last = 1
+            url = url.lastIndexOf('/') == (url.length - 1) ? url.substr(0, url.length - 1) : url.substr(0, url.lastIndexOf('/'));
+            return url.split('/')[url.split('/').length - from_last];
+        }
+        let series_name = getParentFolder();
+        document.title = series_name
+    </script>
+
+    <!-- title and links in center -->
+    <center>
+        <h1>
+            <!-- heading -->
+            <div id="heading"></div>
+            <script>document.getElementById("heading").innerHTML = 'Index of ' + series_name</script>
+        </h1>
+        <hr>
+        <div id="links"></div>
+    </center>
+
+    <!-- Function does file exist -->
+    <script>
+        function doesFileExist(urlToFile) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('HEAD', urlToFile, false);
+            xhr.send();
+
+            if (xhr.status == "404") {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    </script>
+
+    <!-- Loading Index and all links-->
+    <script>
+        let total_chapters = Math.pow(10, 1000);
+
+        index_loading: {
+            for (chapter_num = 1; chapter_num < total_chapters; chapter_num++)
+                if (doesFileExist(chapter_num)) {
+                    var episode_num = chapter_num - 1
+                    if (doesFileExist(chapter_num)) {
+                        document.getElementById("links").innerHTML = document.getElementById("links").innerHTML + '<br>' + '<a href="' + chapter_num + '/">' + series_name + ', Chapter ' + chapter_num + '</a>';
+                    }
+                }
+                else {
+                    console.clear()
+                    break index_loading;
+                }
+        }
+    </script>
+
+    <!-- stylesheet for <a> tag-->
+    <style>
+        a {
+            font-size: 20px;
+            text-decoration: none;
+        }
+
+        a:link {
+            color: red;
+        }
+
+        a:visited {
+            color: green;
+        }
+
+        a:hover {
+            color: hotpink;
+            text-decoration: underline;
+        }
+
+        a:active {
+            color: blue;
+        }
+    </style>
+</body>
+
+</html>
